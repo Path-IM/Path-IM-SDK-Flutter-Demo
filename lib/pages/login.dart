@@ -61,24 +61,19 @@ class LoginPage extends StatelessWidget {
           systemNavigationBarColor: Colors.white,
         ),
         child: Scaffold(
+          appBar: AppBar(
+            title: const Text("登录"),
+          ),
           body: Padding(
             padding: const EdgeInsets.all(45),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "登录",
-                  style: TextStyle(
-                    color: getTextBlack,
-                    fontSize: 20,
-                    fontWeight: getBold,
-                  ),
-                ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 _buildPhone(logic),
                 const SizedBox(height: 20),
                 _buildPassword(logic),
-                const SizedBox(height: 45),
+                const SizedBox(height: 50),
                 Center(
                   child: _buildLogin(logic),
                 ),

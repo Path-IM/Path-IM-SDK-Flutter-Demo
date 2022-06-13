@@ -28,7 +28,7 @@ class DesignTool {
       splashColor: Colors.transparent,
       appBarTheme: const AppBarTheme(
         backgroundColor: getToolbarColor,
-        elevation: 0,
+        elevation: 1,
         centerTitle: true,
         toolbarHeight: getToolbarHeight,
         titleTextStyle: TextStyle(
@@ -36,6 +36,7 @@ class DesignTool {
           fontSize: 18,
           fontWeight: getSemiBold,
         ),
+        shadowColor: getDividerColor,
       ),
       dividerTheme: const DividerThemeData(
         color: getDividerColor,

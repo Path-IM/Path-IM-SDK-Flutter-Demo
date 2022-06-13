@@ -4,9 +4,11 @@ import 'package:uuid/uuid.dart';
 export 'design_tool.dart';
 export 'hive_tool.dart';
 export 'http_tool.dart';
+export 'im_tool.dart';
 export 'time_tool.dart';
 
-final String baseUrl = "";
+const String baseUrl = "";
+const String wsUrl = "";
 
 class Tool {
   static Logic? capture<Logic extends GetxController>(

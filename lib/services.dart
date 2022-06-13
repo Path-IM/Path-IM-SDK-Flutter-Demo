@@ -10,6 +10,7 @@ Future initServices() async {
     tag: HiveService.user,
   );
   await Get.putAsync(() => HttpService().init());
+  IMTool.init();
 }
 
 class HiveService extends GetxService {

@@ -6,20 +6,22 @@ class HiveTool {
   static Box get userBox => HiveService.service(HiveService.user);
 
   static String userName = "userName";
-  static String userPwd = "userPwd";
+  static String userPassword = "userPassword";
 
   static String getUserToken() => userBox.get(userName, defaultValue: "");
 
-  static String getUserPwd() => userBox.get(userPwd, defaultValue: "");
+  static String getUserPassword() =>
+      userBox.get(userPassword, defaultValue: "");
 
-  static bool isLogin() => getUserToken().isNotEmpty && getUserPwd().isNotEmpty;
+  static bool isLogin() =>
+      getUserToken().isNotEmpty && getUserPassword().isNotEmpty;
 
   static void login(
     String userName,
-    String userPwd,
+    String userPassword,
   ) {
     userBox.put(HiveTool.userName, userName);
-    userBox.put(HiveTool.userPwd, userPwd);
+    userBox.put(HiveTool.userPassword, userPassword);
   }
 
   static void logout() => userBox.clear();

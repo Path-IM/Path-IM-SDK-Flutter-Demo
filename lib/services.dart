@@ -6,10 +6,6 @@ Future initServices() async {
     (await path_provider.getApplicationDocumentsDirectory()).path,
   );
   await Get.putAsync(
-    () => HiveService().init(HiveService.config),
-    tag: HiveService.config,
-  );
-  await Get.putAsync(
     () => HiveService().init(HiveService.user),
     tag: HiveService.user,
   );
@@ -19,7 +15,6 @@ Future initServices() async {
 class HiveService extends GetxService {
   static Box service(String name) => Get.find(tag: name);
 
-  static String config = "config";
   static String user = "user";
 
   Future<Box> init(String name) async {

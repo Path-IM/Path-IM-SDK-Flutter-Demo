@@ -109,9 +109,6 @@ class LoginPage extends StatelessWidget {
         ),
         autoFocus: true,
         textInputType: TextInputType.text,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(10),
-        ],
         textInputAction: TextInputAction.next,
       ),
     );

@@ -14,7 +14,7 @@ class GetTextInput extends StatelessWidget {
   final TextInputType? textInputType;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
-  final int maxLines;
+  final int? maxLines;
   final Function(String value)? onSubmitted;
 
   const GetTextInput(

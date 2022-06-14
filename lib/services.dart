@@ -1,4 +1,5 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
+import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 Future initServices() async {
@@ -135,6 +136,7 @@ void initPathIM() {
     totalUnreadListener: TotalUnreadListener(
       onTotalUnread: (count) {
         print("总未读数：$count");
+        ConversationLogic.logic()?.unreadCount.value = count;
       },
     ),
   );

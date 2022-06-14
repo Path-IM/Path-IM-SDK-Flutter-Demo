@@ -1,6 +1,6 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
 import 'package:path_im_sdk_flutter_demo/pages/login.dart';
-import 'package:path_im_sdk_flutter_demo/pages/menu.dart';
+import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
 
 export 'package:path_im_sdk_flutter_demo/pages/unknown.dart';
 
@@ -8,7 +8,7 @@ class Routes {
   static String unknown = "/unknown";
 
   static String login = "/login";
-  static String menu = "/menu";
+  static String conversation = "/conversation";
 
   static final pages = [
     GetPage(
@@ -18,16 +18,10 @@ class Routes {
       showCupertinoParallax: false,
     ),
     GetPage(
-      name: menu,
-      page: () => const MenuPage(),
+      name: conversation,
+      page: () => const ConversationPage(),
       transition: Transition.fadeIn,
       showCupertinoParallax: false,
     ),
   ];
-
-  static void untilMenu() {
-    Get.until((route) {
-      return Get.currentRoute == Routes.menu;
-    });
-  }
 }

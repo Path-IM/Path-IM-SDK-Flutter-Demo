@@ -22,6 +22,8 @@ class LoginLogic extends GetxController {
   }
 
   void login() {
+    Get.offAllNamed(Routes.conversation);
+    return;
     Tool.hideKeyboard();
     if (phone.text.isEmpty) {
       return;
@@ -39,6 +41,7 @@ class LoginLogic extends GetxController {
       onSuccess: (body) {
         GetLoadingDialog.hide();
         Map data = body["data"];
+        Get.offAllNamed(Routes.conversation);
       },
       onError: (code, error) {
         GetLoadingDialog.hide();
@@ -70,7 +73,7 @@ class LoginPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 25),
-                _buildPhone(logic),
+                _buildName(logic),
                 const SizedBox(height: 20),
                 _buildPassword(logic),
                 const SizedBox(height: 50),
@@ -87,7 +90,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPhone(LoginLogic logic) {
+  Widget _buildName(LoginLogic logic) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -95,9 +98,9 @@ class LoginPage extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: TextInput(
+      child: GetTextInput(
         logic.phone,
-        "请输入手机号",
+        "请输入用户名",
         hintSize: 16,
         textSize: 16,
         contentPadding: const EdgeInsets.symmetric(
@@ -105,10 +108,9 @@ class LoginPage extends StatelessWidget {
           horizontal: 10,
         ),
         autoFocus: true,
-        textInputType: TextInputType.number,
+        textInputType: TextInputType.text,
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-          LengthLimitingTextInputFormatter(11),
+          LengthLimitingTextInputFormatter(10),
         ],
         textInputAction: TextInputAction.next,
       ),
@@ -123,7 +125,7 @@ class LoginPage extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: TextInput(
+      child: GetTextInput(
         logic.password,
         "请输入密码",
         hintSize: 16,
@@ -132,6 +134,7 @@ class LoginPage extends StatelessWidget {
           vertical: 12,
           horizontal: 10,
         ),
+        obscureText: true,
         textInputType: TextInputType.text,
       ),
     );
@@ -143,7 +146,7 @@ class LoginPage extends StatelessWidget {
       onTap: logic.login,
       child: Container(
         alignment: Alignment.center,
-        width: 100,
+        width: 150,
         height: 50,
         decoration: BoxDecoration(
           color: Colors.black,

@@ -1,6 +1,6 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
 
-class TextInput extends StatelessWidget {
+class GetTextInput extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final FocusNode? focusNode;
@@ -17,7 +17,7 @@ class TextInput extends StatelessWidget {
   final int maxLines;
   final Function(String value)? onSubmitted;
 
-  const TextInput(
+  const GetTextInput(
     this.controller,
     this.hintText, {
     Key? key,

@@ -2,9 +2,9 @@ import 'package:path_im_sdk_flutter_demo/main.dart';
 
 export 'package:dio/dio.dart';
 
-const int statusCode = -10000;
-const int errorCode = -10001;
-const int cancelCode = -10002;
+const int statusCode = -10001;
+const int errorCode = -10002;
+const int cancelCode = -10003;
 
 const String errorMsg = "网络开小差啦，请稍后重试！";
 
@@ -200,27 +200,14 @@ class HttpTool extends GetLifeCycle {
         if (body is Map && body.containsKey("code")) {
           int code = body["code"];
           String msg = body["msg"];
-          switch (code) {
-            case 0:
-              if (onSuccess != null) {
-                onSuccess(body);
-              }
-              break;
-            case -100:
-            case -101:
-            case -102:
-            case -103:
-            case -104:
-              // MenuLogic.logic()?.forceQuit(msg);
-              break;
-            case -105:
-              // MenuLogic.logic()?.notImplemented(msg);
-              break;
-            default:
-              if (onError != null) {
-                onError(code, msg);
-              }
-              break;
+          if (code == 0) {
+            if (onSuccess != null) {
+              onSuccess(body);
+            }
+          } else {
+            if (onError != null) {
+              onError(code, msg);
+            }
           }
         } else {
           if (onSuccess != null) {

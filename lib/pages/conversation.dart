@@ -9,12 +9,17 @@ class ConversationLogic extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    // PathIMSDK.instance.conversationManager
-    //     .getAllConversationList()
-    //     .then((value) {
-    //   list = value;
-    //   update(["list"]);
-    // });
+    PathIMSDK.instance.conversationManager.getTotalUnread().then(
+      (value) {
+        unreadCount.value = value;
+      },
+    );
+    PathIMSDK.instance.conversationManager.getAllConversationList().then(
+      (value) {
+        list = value;
+        update(["list"]);
+      },
+    );
   }
 }
 
@@ -27,21 +32,30 @@ class ConversationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("会话（${logic.unreadCount}）"),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await PathIMSDK.instance.logout();
+              Get.offAllNamed(Routes.login);
+            },
+            child: const Text("退出"),
+          ),
+        ],
       ),
       body: GetBuilder<ConversationLogic>(
         id: "list",
         builder: (controller) {
           return ListView.separated(
             itemBuilder: (context, index) {
-              return _buildItem(
-                null,
-                onTap: () {
-                  Get.toNamed(Routes.message);
-                },
-              );
+              ConversationModel conversation = logic.list[index];
               return _buildItem(
                 logic.list[index],
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.message, arguments: {
+                    "conversationType": conversation.conversationType,
+                    "conversationID": conversation.conversationID,
+                  });
+                },
               );
             },
             separatorBuilder: (context, index) {
@@ -50,8 +64,7 @@ class ConversationPage extends StatelessWidget {
                 endIndent: 16,
               );
             },
-            // itemCount: logic.list.length,
-            itemCount: 100,
+            itemCount: logic.list.length,
           );
         },
       ),
@@ -60,9 +73,27 @@ class ConversationPage extends StatelessWidget {
   }
 
   Widget _buildItem(
-    ConversationModel? item, {
+    ConversationModel item, {
     Function()? onTap,
   }) {
+    String content = "";
+    MessageModel? message = item.message;
+    if (message != null) {
+      int contentType = message.contentType;
+      if (contentType == ContentType.text) {
+        content = message.content;
+      } else if (contentType == ContentType.picture) {
+        content = "[图片]";
+      } else if (contentType == ContentType.voice) {
+        content = "[语音]";
+      } else if (contentType == ContentType.video) {
+        content = "[视频]";
+      } else if (contentType == ContentType.file) {
+        content = "[文件]";
+      } else {
+        content = "[未知]";
+      }
+    }
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -82,8 +113,8 @@ class ConversationPage extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     "名称是什么",
                     style: TextStyle(
                       color: getTextBlack,
@@ -93,10 +124,10 @@ class ConversationPage extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
-                    "这是消息内容内容内容内容内容",
-                    style: TextStyle(
+                    content,
+                    style: const TextStyle(
                       color: getHintBlack,
                       fontSize: 14,
                     ),
@@ -118,9 +149,9 @@ class ConversationPage extends StatelessWidget {
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Text(
-                    "8",
-                    style: TextStyle(
+                  child: Text(
+                    item.unreadCount?.toString() ?? "0",
+                    style: const TextStyle(
                       color: getTextWhite,
                       fontSize: 10,
                       fontWeight: getSemiBold,
@@ -128,13 +159,14 @@ class ConversationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  TimeTool.formatMessageTimestamp(1654466766000),
-                  style: const TextStyle(
-                    color: getHintBlack,
-                    fontSize: 12,
+                if (item.messageTime != null)
+                  Text(
+                    TimeTool.formatMessageTimestamp(item.messageTime!),
+                    style: const TextStyle(
+                      color: getHintBlack,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
               ],
             ),
           ],

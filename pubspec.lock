@@ -203,7 +203,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: a330eedee84c0b1c4ae1c914f7d78557764c4316
+      resolved-ref: "7fdf44a03fe3ca08359b105f0884522d001302ba"
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
     version: "1.0.0"
@@ -283,7 +283,7 @@ packages:
       name: protobuf
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   pull_to_refresh:
     dependency: "direct main"
     description:

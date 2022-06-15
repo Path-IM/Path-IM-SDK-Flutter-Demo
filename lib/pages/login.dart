@@ -21,7 +21,11 @@ class LoginLogic extends GetxController {
     super.onClose();
   }
 
-  void login() {
+  void login() async {
+    await PathIMSDK.instance.login(
+      token: "dizzy",
+      userID: "dizzy",
+    );
     Get.offAllNamed(Routes.conversation);
     return;
     Tool.hideKeyboard();

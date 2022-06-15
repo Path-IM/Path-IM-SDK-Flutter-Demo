@@ -7,7 +7,7 @@ export 'http_tool.dart';
 export 'time_tool.dart';
 
 const String baseUrl = "";
-const String wsUrl = "";
+const String wsUrl = "ws://42.194.149.177:9090";
 
 class Tool {
   static Logic? capture<Logic extends GetxController>(

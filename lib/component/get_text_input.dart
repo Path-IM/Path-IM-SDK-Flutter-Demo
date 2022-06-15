@@ -15,7 +15,8 @@ class GetTextInput extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
   final int? maxLines;
-  final Function(String value)? onSubmitted;
+  final Function()? onComplete;
+  final Function()? onTap;
 
   const GetTextInput(
     this.controller,
@@ -36,7 +37,8 @@ class GetTextInput extends StatelessWidget {
     this.inputFormatters,
     this.textInputAction,
     this.maxLines = 1,
-    this.onSubmitted,
+    this.onComplete,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -66,14 +68,8 @@ class GetTextInput extends StatelessWidget {
       inputFormatters: inputFormatters,
       textInputAction: textInputAction,
       maxLines: maxLines,
-      onSubmitted: (value) {
-        if (value.isEmpty) {
-          return;
-        }
-        if (onSubmitted != null) {
-          onSubmitted!(value);
-        }
-      },
+      onEditingComplete: onComplete,
+      onTap: onTap,
     );
   }
 }

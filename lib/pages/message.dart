@@ -16,8 +16,7 @@ class MessageLogic extends GetxController {
   late TextEditingController controller;
   late FocusNode focusNode;
 
-  int limit = 0;
-  int offset = 100;
+  int offset = 0;
   List<MessageModel> list = [];
 
   @override
@@ -33,6 +32,7 @@ class MessageLogic extends GetxController {
         if (position.pixels >= position.maxScrollExtent && !isLoadMore) {
           isLoadMore = true;
           Future.delayed(kThemeChangeDuration, () {
+            ++offset;
             loadList();
           });
         }
@@ -53,8 +53,8 @@ class MessageLogic extends GetxController {
     PathIMSDK.instance.messageManager
         .getMessageList(
       conversationID: conversationID,
-      limit: ++limit,
-      offset: offset,
+      limit: 20,
+      offset: offset * 20,
     )
         .then((value) {
       list.addAll(value);
@@ -165,8 +165,14 @@ class MessagePage extends StatelessWidget {
         ),
         title: const Text("名称是什么"),
       ),
-      body: _buildList(logic),
-      bottomNavigationBar: _buildNavigationBar(logic),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildList(logic),
+          ),
+          _buildOperate(logic),
+        ],
+      ),
       backgroundColor: const Color(0xFFF9F9F9),
     );
   }
@@ -179,7 +185,9 @@ class MessagePage extends StatelessWidget {
         id: "list",
         builder: (logic) {
           return ListView.separated(
+            reverse: true,
             controller: logic.scrollController,
+            padding: const EdgeInsets.symmetric(vertical: 20),
             itemBuilder: (context, index) {
               return MessageItem(message: logic.list[index]);
             },
@@ -189,14 +197,10 @@ class MessagePage extends StatelessWidget {
               if (index == logic.list.length - 1) {
                 return TimeItem(messageTime: clientTime);
               } else {
-                MessageModel? lastMessage = logic.list[index + 1];
-                if (lastMessage != null) {
-                  int lastSentTime = lastMessage.clientTime;
-                  if ((lastSentTime - clientTime).abs() > 300000) {
-                    return TimeItem(messageTime: clientTime);
-                  } else {
-                    return const SizedBox(height: 20);
-                  }
+                MessageModel lastMessage = logic.list[index + 1];
+                int lastSentTime = lastMessage.clientTime;
+                if ((lastSentTime - clientTime).abs() > 300000) {
+                  return TimeItem(messageTime: clientTime);
                 } else {
                   return const SizedBox(height: 20);
                 }
@@ -209,10 +213,11 @@ class MessagePage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavigationBar(MessageLogic logic) {
+  Widget _buildOperate(MessageLogic logic) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
+        color: Colors.white,
         border: Border(
           top: BorderSide(
             color: getDividerColor,
@@ -239,6 +244,7 @@ class MessagePage extends StatelessWidget {
                 ),
                 autoFocus: true,
                 maxLines: null,
+                textInputType: TextInputType.text,
                 textInputAction: TextInputAction.send,
                 onComplete: () {
                   String value = logic.controller.text;

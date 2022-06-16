@@ -194,16 +194,18 @@ packages:
   path_im_core_flutter:
     dependency: transitive
     description:
-      name: path_im_core_flutter
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "023aee89e22e864b31a03517cedbc2d722727497"
+      url: "https://github.com/Path-IM/Path-IM-Core-Flutter"
+    source: git
+    version: "1.0.2"
   path_im_sdk_flutter:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "7fdf44a03fe3ca08359b105f0884522d001302ba"
+      resolved-ref: bb61fda2651618523adde35c2956912bbbef83da
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
     version: "1.0.0"

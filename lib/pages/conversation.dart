@@ -31,7 +31,7 @@ class ConversationPage extends StatelessWidget {
     ConversationLogic logic = Get.put(ConversationLogic());
     return Scaffold(
       appBar: AppBar(
-        title: Text("会话（${logic.unreadCount}）"),
+        title: Obx(() => Text("会话（${logic.unreadCount.value}）")),
         actions: [
           TextButton(
             onPressed: () async {

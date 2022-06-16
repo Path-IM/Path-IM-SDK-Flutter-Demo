@@ -27,6 +27,7 @@ class _MessageItemState extends State<MessageItem> {
   void initState() {
     super.initState();
     _message = widget.message;
+    _direction = _message.sendID == "dizzy" ? Direction.right : Direction.left;
     _contentType = _message.contentType;
     _content = _message.content;
   }
@@ -115,7 +116,16 @@ class _MessageItemState extends State<MessageItem> {
                 color: _direction == Direction.right
                     ? const Color(0xFF121212)
                     : Colors.white,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.only(
+                  topLeft: _direction == Direction.right
+                      ? const Radius.circular(4)
+                      : Radius.zero,
+                  topRight: _direction == Direction.right
+                      ? Radius.zero
+                      : const Radius.circular(4),
+                  bottomLeft: const Radius.circular(4),
+                  bottomRight: const Radius.circular(4),
+                ),
               ),
               child: Text(
                 text,

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_im_sdk_flutter_demo/main.dart';
 import 'package:path_im_sdk_flutter_demo/pages/widgets/message_item.dart';
@@ -7,8 +6,9 @@ import 'package:path_im_sdk_flutter_demo/pages/widgets/time_item.dart';
 class MessageLogic extends GetxController {
   static MessageLogic? logic() => Tool.capture(Get.find);
 
-  late int conversationType;
   late String conversationID;
+  late int conversationType;
+  late String receiveID;
 
   late ScrollController scrollController;
   bool isLoadMore = false;
@@ -23,8 +23,9 @@ class MessageLogic extends GetxController {
   void onInit() {
     super.onInit();
     Map args = Get.arguments;
-    conversationType = args["conversationType"];
     conversationID = args["conversationID"];
+    conversationType = args["conversationType"];
+    receiveID = args["receiveID"];
     scrollController = ScrollController()
       ..addListener(() {
         hideOperate();
@@ -63,6 +64,10 @@ class MessageLogic extends GetxController {
     });
   }
 
+  void receive(){
+
+  }
+
   void scrollToTop({bool animateTo = false}) {
     if (animateTo) {
       scrollController.animateTo(
@@ -84,7 +89,7 @@ class MessageLogic extends GetxController {
   void sendText(String text) {
     PathIMSDK.instance.messageManager.sendText(
       conversationType: conversationType,
-      receiveID: conversationID,
+      receiveID: receiveID,
       text: text,
     );
   }
@@ -92,7 +97,7 @@ class MessageLogic extends GetxController {
   void sendPicture(String pictureUrl) {
     PathIMSDK.instance.messageManager.sendPicture(
       conversationType: conversationType,
-      receiveID: conversationID,
+      receiveID: receiveID,
       content: PictureContent(pictureUrl: pictureUrl),
     );
   }
@@ -100,7 +105,7 @@ class MessageLogic extends GetxController {
   void sendVoice(String voiceUrl, int duration) {
     PathIMSDK.instance.messageManager.sendVoice(
       conversationType: conversationType,
-      receiveID: conversationID,
+      receiveID: receiveID,
       content: VoiceContent(
         voiceUrl: voiceUrl,
         duration: duration,
@@ -111,7 +116,7 @@ class MessageLogic extends GetxController {
   void sendVideo(String videoUrl, int duration) {
     PathIMSDK.instance.messageManager.sendVideo(
       conversationType: conversationType,
-      receiveID: conversationID,
+      receiveID: receiveID,
       content: VideoContent(
         videoUrl: videoUrl,
         duration: duration,
@@ -122,7 +127,7 @@ class MessageLogic extends GetxController {
   void sendFile(String fileUrl, String type, int size) {
     PathIMSDK.instance.messageManager.sendFile(
       conversationType: conversationType,
-      receiveID: conversationID,
+      receiveID: receiveID,
       content: FileContent(
         fileUrl: fileUrl,
         type: type,

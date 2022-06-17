@@ -9,11 +9,19 @@ class ConversationLogic extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    loadData();
+  }
+
+  void loadData() {
     PathIMSDK.instance.conversationManager.getTotalUnread().then(
       (value) {
         unreadCount.value = value;
       },
     );
+    loadList();
+  }
+
+  void loadList() {
     PathIMSDK.instance.conversationManager.getAllConversationList().then(
       (value) {
         list = value;
@@ -52,8 +60,9 @@ class ConversationPage extends StatelessWidget {
                 logic.list[index],
                 onTap: () {
                   Get.toNamed(Routes.message, arguments: {
-                    "conversationType": conversation.conversationType,
                     "conversationID": conversation.conversationID,
+                    "conversationType": conversation.conversationType,
+                    "receiveID": conversation.receiveID,
                   });
                 },
               );

@@ -94,9 +94,11 @@ void initPathIM() {
     conversationListener: ConversationListener(
       onAdded: (conversation) {
         print("新增会话：${conversation.toJsonMap()}");
+        ConversationLogic.logic()?.loadList();
       },
       onUpdate: (conversation) {
         print("更新会话：${conversation.toJsonMap()}");
+        ConversationLogic.logic()?.loadList();
       },
     ),
     messageListener: MessageListener(
@@ -104,6 +106,7 @@ void initPathIM() {
         print("接收消息：${message.toJson()}"
             "\ncontent：${message.content}"
             "\nseq：${message.seq}");
+        ConversationLogic.logic()?.loadList();
       },
       onSendSuccess: (clientMsgID) {
         print("发送成功：$clientMsgID");

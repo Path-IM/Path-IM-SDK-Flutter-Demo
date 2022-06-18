@@ -75,17 +75,26 @@ class MessageLogic extends GetxController {
   }
 
   void receive(MessageModel message) {
-    if (message.sendID == receiveID) {
-      int index = list.indexWhere((msg) {
-        return msg.clientMsgID == message.clientMsgID;
-      });
-      if (index != -1) {
-        list[index] = message;
-      } else {
-        list.insert(0, message);
+    bool updateList = false;
+    if (conversationType == ConversationType.single) {
+      if (message.sendID == receiveID) {
+        updateList = true;
       }
-      update(["list"]);
+    } else {
+      if (message.receiveID == receiveID) {
+        updateList = true;
+      }
     }
+    if (!updateList) return;
+    int index = list.indexWhere((msg) {
+      return msg.clientMsgID == message.clientMsgID;
+    });
+    if (index != -1) {
+      list[index] = message;
+    } else {
+      list.insert(0, message);
+    }
+    update(["list"]);
   }
 
   void scrollToTop({bool animateTo = false}) {

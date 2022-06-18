@@ -3,12 +3,14 @@ import 'package:path_im_sdk_flutter_demo/main.dart';
 class ConversationLogic extends GetxController {
   static ConversationLogic? logic() => Tool.capture(Get.find);
 
+  late String userId;
   RxInt unreadCount = 0.obs;
   List<ConversationModel> list = [];
 
   @override
   void onReady() {
     super.onReady();
+    userId = Get.arguments["userId"];
     loadData();
   }
 
@@ -123,9 +125,9 @@ class ConversationPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "名称是什么",
-                    style: TextStyle(
+                  Text(
+                    item.receiveID,
+                    style: const TextStyle(
                       color: getTextBlack,
                       fontSize: 16,
                       fontWeight: getSemiBold,

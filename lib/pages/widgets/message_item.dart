@@ -1,4 +1,5 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
+import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
 
 enum Direction {
   left,
@@ -27,7 +28,9 @@ class _MessageItemState extends State<MessageItem> {
   void initState() {
     super.initState();
     _message = widget.message;
-    _direction = _message.sendID == "dizzy" ? Direction.right : Direction.left;
+    _direction = _message.sendID == ConversationLogic.logic()?.userId
+        ? Direction.right
+        : Direction.left;
     _contentType = _message.contentType;
     _content = _message.content;
   }

@@ -28,31 +28,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Refresh.configuration(
-      GetMaterialApp(
-        title: "PathIMDemo",
-        theme: DesignTool.theme(Brightness.light),
-        darkTheme: DesignTool.theme(Brightness.dark),
-        initialRoute: Routes.login,
-        getPages: Routes.pages,
-        unknownRoute: GetPage(
-          name: Routes.unknown,
-          page: () => const UnknownPage(),
-        ),
-        defaultTransition: Transition.cupertino,
-        builder: (context, child) {
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaleFactor: 1.0,
-              boldText: false,
-            ),
-            child: ScrollConfiguration(
-              behavior: OverscrollBehavior(),
-              child: child!,
-            ),
-          );
-        },
+    return GetMaterialApp(
+      title: "PathIMDemo",
+      theme: DesignTool.theme(Brightness.light),
+      darkTheme: DesignTool.theme(Brightness.dark),
+      initialRoute: Routes.login,
+      getPages: Routes.pages,
+      unknownRoute: GetPage(
+        name: Routes.unknown,
+        page: () => const UnknownPage(),
       ),
+      defaultTransition: Transition.cupertino,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: 1.0,
+            boldText: false,
+          ),
+          child: ScrollConfiguration(
+            behavior: OverscrollBehavior(),
+            child: child!,
+          ),
+        );
+      },
     );
   }
 }

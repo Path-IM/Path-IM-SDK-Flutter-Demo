@@ -22,12 +22,6 @@ class LoginLogic extends GetxController {
   }
 
   void login() async {
-    await PathIMSDK.instance.login(
-      token: "dizzy",
-      userID: "dizzy",
-    );
-    Get.offAllNamed(Routes.conversation);
-    return;
     Tool.hideKeyboard();
     if (phone.text.isEmpty) {
       return;
@@ -37,18 +31,34 @@ class LoginLogic extends GetxController {
     }
     GetLoadingDialog.show("登录中");
     _http.post(
-      "",
+      "/v1/white/login",
       data: {
-        "phone": phone.text,
+        "username": phone.text,
         "password": password.text,
       },
-      onSuccess: (body) {
+      onSuccess: (body) async {
         GetLoadingDialog.hide();
-        Map data = body["data"];
-        Get.offAllNamed(Routes.conversation);
+        String token = body["token"];
+        String userId = body["uid"];
+        await PathIMSDK.instance.login(
+          token: token,
+          userID: userId,
+        );
+        Get.offAllNamed(Routes.conversation, arguments: {
+          "userId": userId,
+        });
       },
       onError: (code, error) {
         GetLoadingDialog.hide();
+        GetAlertDialog.show(
+          const Text("密码错误"),
+          actions: [
+            const TextButton(
+              onPressed: GetAlertDialog.hide,
+              child: Text("知道了"),
+            ),
+          ],
+        );
       },
     );
   }

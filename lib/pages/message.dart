@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:path_im_sdk_flutter_demo/main.dart';
+import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
 import 'package:path_im_sdk_flutter_demo/pages/widgets/message_item.dart';
 import 'package:path_im_sdk_flutter_demo/pages/widgets/time_item.dart';
 
@@ -47,6 +48,15 @@ class MessageLogic extends GetxController {
   void onClose() {
     controller.dispose();
     focusNode.dispose();
+    PathIMSDK.instance.conversationManager
+        .markConversationRead(
+      conversationID: conversationID,
+      conversationType: conversationType,
+      receiveID: receiveID,
+    )
+        .then((value) {
+      ConversationLogic.logic()?.loadList();
+    });
     super.onClose();
   }
 
@@ -64,8 +74,18 @@ class MessageLogic extends GetxController {
     });
   }
 
-  void receive(){
-
+  void receive(MessageModel message) {
+    if (message.sendID == receiveID) {
+      int index = list.indexWhere((msg) {
+        return msg.clientMsgID == message.clientMsgID;
+      });
+      if (index != -1) {
+        list[index] = message;
+      } else {
+        list.insert(0, message);
+      }
+      update(["list"]);
+    }
   }
 
   void scrollToTop({bool animateTo = false}) {
@@ -86,24 +106,28 @@ class MessageLogic extends GetxController {
     }
   }
 
-  void sendText(String text) {
-    PathIMSDK.instance.messageManager.sendText(
+  void sendText(String text) async {
+    MessageModel message = await PathIMSDK.instance.messageManager.sendText(
       conversationType: conversationType,
       receiveID: receiveID,
       text: text,
     );
+    list.insert(0, message);
+    update(["list"]);
   }
 
-  void sendPicture(String pictureUrl) {
-    PathIMSDK.instance.messageManager.sendPicture(
+  void sendPicture(String pictureUrl) async {
+    MessageModel message = await PathIMSDK.instance.messageManager.sendPicture(
       conversationType: conversationType,
       receiveID: receiveID,
       content: PictureContent(pictureUrl: pictureUrl),
     );
+    list.insert(0, message);
+    update(["list"]);
   }
 
-  void sendVoice(String voiceUrl, int duration) {
-    PathIMSDK.instance.messageManager.sendVoice(
+  void sendVoice(String voiceUrl, int duration) async {
+    MessageModel message = await PathIMSDK.instance.messageManager.sendVoice(
       conversationType: conversationType,
       receiveID: receiveID,
       content: VoiceContent(
@@ -111,10 +135,12 @@ class MessageLogic extends GetxController {
         duration: duration,
       ),
     );
+    list.insert(0, message);
+    update(["list"]);
   }
 
-  void sendVideo(String videoUrl, int duration) {
-    PathIMSDK.instance.messageManager.sendVideo(
+  void sendVideo(String videoUrl, int duration) async {
+    MessageModel message = await PathIMSDK.instance.messageManager.sendVideo(
       conversationType: conversationType,
       receiveID: receiveID,
       content: VideoContent(
@@ -122,10 +148,12 @@ class MessageLogic extends GetxController {
         duration: duration,
       ),
     );
+    list.insert(0, message);
+    update(["list"]);
   }
 
-  void sendFile(String fileUrl, String type, int size) {
-    PathIMSDK.instance.messageManager.sendFile(
+  void sendFile(String fileUrl, String type, int size) async {
+    MessageModel message = await PathIMSDK.instance.messageManager.sendFile(
       conversationType: conversationType,
       receiveID: receiveID,
       content: FileContent(
@@ -134,6 +162,8 @@ class MessageLogic extends GetxController {
         size: size,
       ),
     );
+    list.insert(0, message);
+    update(["list"]);
   }
 
   void pick() async {
@@ -168,7 +198,7 @@ class MessagePage extends StatelessWidget {
         leading: const BackButton(
           color: Colors.black,
         ),
-        title: const Text("名称是什么"),
+        title: Text(logic.receiveID),
       ),
       body: Column(
         children: [
@@ -194,7 +224,11 @@ class MessagePage extends StatelessWidget {
             controller: logic.scrollController,
             padding: const EdgeInsets.symmetric(vertical: 20),
             itemBuilder: (context, index) {
-              return MessageItem(message: logic.list[index]);
+              MessageModel message = logic.list[index];
+              return MessageItem(
+                key: ValueKey(message.clientMsgID),
+                message: message,
+              );
             },
             separatorBuilder: (context, index) {
               MessageModel message = logic.list[index];

@@ -71,13 +71,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.1"
-  file:
-    dependency: transitive
-    description:
-      name: file
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "6.1.2"
   file_picker:
     dependency: "direct main"
     description:
@@ -128,13 +121,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.6.5"
-  hive:
-    dependency: "direct main"
-    description:
-      name: hive
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.2.2"
   http_parser:
     dependency: transitive
     description:
@@ -205,66 +191,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "34088320daf92452ca3d893c7ace08024241439e"
+      resolved-ref: "204d0727eaf17e45e3982b92377f55965d9c8fd3"
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
     version: "1.0.0"
-  path_provider:
-    dependency: "direct main"
-    description:
-      name: path_provider
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.11"
-  path_provider_android:
-    dependency: transitive
-    description:
-      name: path_provider_android
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.14"
-  path_provider_ios:
-    dependency: transitive
-    description:
-      name: path_provider_ios
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.9"
-  path_provider_linux:
-    dependency: transitive
-    description:
-      name: path_provider_linux
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.1.7"
-  path_provider_macos:
-    dependency: transitive
-    description:
-      name: path_provider_macos
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.6"
-  path_provider_platform_interface:
-    dependency: transitive
-    description:
-      name: path_provider_platform_interface
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.4"
-  path_provider_windows:
-    dependency: transitive
-    description:
-      name: path_provider_windows
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.7"
-  platform:
-    dependency: transitive
-    description:
-      name: platform
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.1.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -272,13 +202,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.2"
-  process:
-    dependency: transitive
-    description:
-      name: process
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "4.2.4"
   protobuf:
     dependency: transitive
     description:
@@ -286,13 +209,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
-  pull_to_refresh:
-    dependency: "direct main"
-    description:
-      name: pull_to_refresh
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -383,7 +299,7 @@ packages:
     source: hosted
     version: "1.3.1"
   uuid:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: uuid
       url: "https://pub.flutter-io.cn"
@@ -403,13 +319,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.6.1"
-  xdg_directories:
-    dependency: transitive
-    description:
-      name: xdg_directories
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.2.0+1"
 sdks:
   dart: ">=2.17.1 <3.0.0"
-  flutter: ">=2.8.1"
+  flutter: ">=2.0.0"

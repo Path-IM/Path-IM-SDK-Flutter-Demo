@@ -175,6 +175,35 @@ class MessageLogic extends GetxController {
     update(["list"]);
   }
 
+  void sendRevoke(String clientMsgID) {
+    PathIMSDK.instance.messageManager.markMessageRevoke(
+      conversationType: conversationType,
+      receiveID: receiveID,
+      clientMsgID: clientMsgID,
+      revokeContent: "撤回内容-可以随意定义",
+    );
+  }
+
+  void updateRead(MessageModel message) {
+    int index = list.indexWhere((item) {
+      return item.clientMsgID == message.clientMsgID;
+    });
+    if (index != -1) {
+      list[index] = message;
+      update(["list"]);
+    }
+  }
+
+  void updateRevoke(MessageModel message) {
+    int index = list.indexWhere((item) {
+      return item.clientMsgID == message.clientMsgID;
+    });
+    if (index != -1) {
+      list[index] = message;
+      update(["list"]);
+    }
+  }
+
   void pick() async {
     hideOperate();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -235,7 +264,7 @@ class MessagePage extends StatelessWidget {
             itemBuilder: (context, index) {
               MessageModel message = logic.list[index];
               return MessageItem(
-                key: ValueKey(message.clientMsgID),
+                key: ValueKey(message.toJson()),
                 message: message,
               );
             },

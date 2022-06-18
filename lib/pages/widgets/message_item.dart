@@ -1,5 +1,6 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
 import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
+import 'package:path_im_sdk_flutter_demo/pages/message.dart';
 
 enum Direction {
   left,
@@ -38,18 +39,22 @@ class _MessageItemState extends State<MessageItem> {
   @override
   Widget build(BuildContext context) {
     Widget widget = const SizedBox();
-    if (_contentType == ContentType.text) {
-      widget = _buildText(_content);
-      // } else if (_contentType == ContentType.picture) {
-      //   widget = _buildImage(PictureContent.fromJson(_content));
-      // } else if (_contentType == ContentType.voice) {
-      //   widget = _buildVoice(VoiceContent.fromJson(_content));
-      // } else if (_contentType == ContentType.video) {
-      //   widget = _buildVideo(VideoContent.fromJson(_content));
-      // } else if (_contentType == ContentType.file) {
-      //   widget = _buildFile(FileContent.fromJson(_content));
+    if (_message.markRevoke == true) {
+      widget = _buildText(_message.revokeContent ?? "消息已经撤回！");
     } else {
-      widget = _buildText("暂不支持查看此消息");
+      if (_contentType == ContentType.text) {
+        widget = _buildText(_content);
+        // } else if (_contentType == ContentType.picture) {
+        //   widget = _buildImage(PictureContent.fromJson(_content));
+        // } else if (_contentType == ContentType.voice) {
+        //   widget = _buildVoice(VoiceContent.fromJson(_content));
+        // } else if (_contentType == ContentType.video) {
+        //   widget = _buildVideo(VideoContent.fromJson(_content));
+        // } else if (_contentType == ContentType.file) {
+        //   widget = _buildFile(FileContent.fromJson(_content));
+      } else {
+        widget = _buildText("暂不支持查看此消息");
+      }
     }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -111,7 +116,8 @@ class _MessageItemState extends State<MessageItem> {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onLongPress: () {
-              Clipboard.setData(ClipboardData(text: text));
+              // Clipboard.setData(ClipboardData(text: text));
+              MessageLogic.logic()?.sendRevoke(_message.clientMsgID);
             },
             child: Container(
               padding: const EdgeInsets.all(10),

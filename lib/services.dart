@@ -92,16 +92,14 @@ void initPathIM() {
       },
     ),
     readReceiptListener: ReadReceiptListener(
-      onSingle: (clientMsgID) {
-        print("单聊已读：$clientMsgID");
-      },
-      onGroup: (clientMsgID, readCount) {
-        print("群聊已读：$clientMsgID - $readCount");
+      onRead: (message) {
+        print("消息被读：${message.toJson()}");
       },
     ),
     revokeReceiptListener: RevokeReceiptListener(
-      onRevoke: (clientMsgID) {
-        print("消息撤回：$clientMsgID");
+      onRevoke: (message) {
+        print("消息撤回：${message.toJson()}");
+        MessageLogic.logic()?.updateRevoke(message);
       },
     ),
     totalUnreadListener: TotalUnreadListener(

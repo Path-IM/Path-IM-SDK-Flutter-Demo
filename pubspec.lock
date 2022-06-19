@@ -180,18 +180,16 @@ packages:
   path_im_core_flutter:
     dependency: transitive
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "023aee89e22e864b31a03517cedbc2d722727497"
-      url: "https://github.com/Path-IM/Path-IM-Core-Flutter"
-    source: git
+      name: path_im_core_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
     version: "1.0.2"
   path_im_sdk_flutter:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ea31fe768d030aa2cce4a6a85f1ce412be8697cf
+      resolved-ref: "5e5f1bd9113a005c9111c981e346eeb2b2763880"
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
     version: "1.0.0"

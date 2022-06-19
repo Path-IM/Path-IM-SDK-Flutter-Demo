@@ -61,6 +61,7 @@ class MessageLogic extends GetxController {
   void loadList() {
     PathIMSDK.instance.messageManager
         .getMessageList(
+      conversationType: conversationType,
       receiveID: receiveID,
       limit: 20,
       offset: offset * 20,

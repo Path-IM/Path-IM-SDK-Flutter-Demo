@@ -116,7 +116,7 @@ class ConversationPage extends StatelessWidget {
           children: [
             ClipOval(
               child: Image.network(
-                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F16%2F20210716174622_853a5.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657806416&t=198ffd53bb7bc1edb365d3a1073e422f",
+                "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F09%2F20210709142454_dc8dc.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1658225627&t=96447835672841c5d042e59720bcb48b",
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,

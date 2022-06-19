@@ -61,25 +61,34 @@ class _MessageItemState extends State<MessageItem> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAvatar(
-            _direction == Direction.left,
-            _message.sendID,
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F28%2F20200628234127_UAsAi.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657896940&t=a263ba654201e2f892053d04e69b4b47",
+          _buildAvatar(_direction == Direction.left, _direction),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: _direction == Direction.left
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.end,
+              children: [
+                Text(
+                  _message.sendID,
+                  style: const TextStyle(
+                    color: getTextBlack,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                widget,
+              ],
+            ),
           ),
           const SizedBox(width: 10),
-          Expanded(child: widget),
-          const SizedBox(width: 10),
-          _buildAvatar(
-            _direction == Direction.right,
-            _message.sendID,
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F28%2F20200628234127_UAsAi.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1657896940&t=a263ba654201e2f892053d04e69b4b47",
-          ),
+          _buildAvatar(_direction == Direction.right, _direction),
         ],
       ),
     );
   }
 
-  Widget _buildAvatar(bool visible, String userId, String avatar) {
+  Widget _buildAvatar(bool visible, Direction direction) {
     return Visibility(
       visible: visible,
       maintainState: true,
@@ -87,10 +96,20 @@ class _MessageItemState extends State<MessageItem> {
       maintainSize: true,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: () {},
+        onTap: () {
+          if (_direction == Direction.left) {
+            Get.offAndToNamed(
+              Routes.message,
+              arguments: {
+                "conversationType": ConversationType.single,
+                "receiveID": _message.sendID,
+              },
+            );
+          }
+        },
         child: ClipOval(
           child: Image.network(
-            avatar,
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202107%2F09%2F20210709142454_dc8dc.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1658225627&t=96447835672841c5d042e59720bcb48b",
             width: 40,
             height: 40,
           ),
@@ -117,7 +136,10 @@ class _MessageItemState extends State<MessageItem> {
             behavior: HitTestBehavior.opaque,
             onLongPress: () {
               // Clipboard.setData(ClipboardData(text: text));
-              MessageLogic.logic()?.sendRevoke(_message.clientMsgID);
+              if (_direction == Direction.right) {
+                MessageLogic.logic(_message.receiveID)
+                    ?.sendRevoke(_message.clientMsgID);
+              }
             },
             child: Container(
               padding: const EdgeInsets.all(10),

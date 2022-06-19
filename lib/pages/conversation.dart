@@ -61,11 +61,13 @@ class ConversationPage extends StatelessWidget {
               return _buildItem(
                 logic.list[index],
                 onTap: () {
-                  Get.toNamed(Routes.message, arguments: {
-                    "conversationID": conversation.conversationID,
-                    "conversationType": conversation.conversationType,
-                    "receiveID": conversation.receiveID,
-                  });
+                  Get.toNamed(
+                    Routes.message,
+                    arguments: {
+                      "conversationType": conversation.conversationType,
+                      "receiveID": conversation.receiveID,
+                    },
+                  );
                 },
               );
             },

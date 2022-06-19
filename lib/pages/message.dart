@@ -5,11 +5,14 @@ import 'package:path_im_sdk_flutter_demo/pages/widgets/message_item.dart';
 import 'package:path_im_sdk_flutter_demo/pages/widgets/time_item.dart';
 
 class MessageLogic extends GetxController {
-  static MessageLogic? logic() => Tool.capture(Get.find);
+  static MessageLogic? logic(String tag) => Tool.capture(
+        Get.find,
+        tag: tag,
+      );
+  final int conversationType;
+  final String receiveID;
 
-  late String conversationID;
-  late int conversationType;
-  late String receiveID;
+  MessageLogic(this.conversationType, this.receiveID);
 
   late ScrollController scrollController;
   bool isLoadMore = false;
@@ -23,10 +26,6 @@ class MessageLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Map args = Get.arguments;
-    conversationID = args["conversationID"];
-    conversationType = args["conversationType"];
-    receiveID = args["receiveID"];
     scrollController = ScrollController()
       ..addListener(() {
         hideOperate();
@@ -50,7 +49,6 @@ class MessageLogic extends GetxController {
     focusNode.dispose();
     PathIMSDK.instance.conversationManager
         .markConversationRead(
-      conversationID: conversationID,
       conversationType: conversationType,
       receiveID: receiveID,
     )
@@ -63,7 +61,7 @@ class MessageLogic extends GetxController {
   void loadList() {
     PathIMSDK.instance.messageManager
         .getMessageList(
-      conversationID: conversationID,
+      receiveID: receiveID,
       limit: 20,
       offset: offset * 20,
     )
@@ -230,7 +228,13 @@ class MessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MessageLogic logic = Get.put(MessageLogic());
+    Map args = Get.arguments;
+    int conversationType = args["conversationType"];
+    String receiveID = args["receiveID"];
+    MessageLogic logic = Get.put(
+      MessageLogic(conversationType, receiveID),
+      tag: receiveID,
+    );
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
@@ -255,6 +259,7 @@ class MessagePage extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: logic.hideOperate,
       child: GetBuilder<MessageLogic>(
+        tag: logic.receiveID,
         id: "list",
         builder: (logic) {
           return ListView.separated(

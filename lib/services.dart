@@ -60,21 +60,21 @@ void initPathIM() {
     ),
     conversationListener: ConversationListener(
       onAdded: (conversation) {
-        print("新增会话：${conversation.toJsonMap()}");
         ConversationLogic.logic()?.loadList();
       },
       onUpdate: (conversation) {
-        print("更新会话：${conversation.toJsonMap()}");
         ConversationLogic.logic()?.loadList();
       },
     ),
     messageListener: MessageListener(
       onReceiveMsg: (message) {
-        print("接收消息：${message.toJson()}"
-            "\ncontent：${message.content}"
-            "\nseq：${message.seq}");
         ConversationLogic.logic()?.loadList();
-        MessageLogic.logic()?.receive(message);
+        String receiveID = message.receiveID;
+        if (message.conversationType == ConversationType.single &&
+            message.sendID != ConversationLogic.logic()?.userId) {
+          receiveID = message.sendID;
+        }
+        MessageLogic.logic(receiveID)?.receive(message);
       },
       onSendSuccess: (clientMsgID) {
         print("发送成功：$clientMsgID");
@@ -93,18 +93,26 @@ void initPathIM() {
     ),
     readReceiptListener: ReadReceiptListener(
       onRead: (message) {
-        print("消息被读：${message.toJson()}");
+        String receiveID = message.receiveID;
+        if (message.conversationType == ConversationType.single &&
+            message.sendID != ConversationLogic.logic()?.userId) {
+          receiveID = message.sendID;
+        }
+        MessageLogic.logic(receiveID)?.updateRead(message);
       },
     ),
     revokeReceiptListener: RevokeReceiptListener(
       onRevoke: (message) {
-        print("消息撤回：${message.toJson()}");
-        MessageLogic.logic()?.updateRevoke(message);
+        String receiveID = message.receiveID;
+        if (message.conversationType == ConversationType.single &&
+            message.sendID != ConversationLogic.logic()?.userId) {
+          receiveID = message.sendID;
+        }
+        MessageLogic.logic(receiveID)?.updateRevoke(message);
       },
     ),
     totalUnreadListener: TotalUnreadListener(
       onTotalUnread: (count) {
-        print("总未读数：$count");
         ConversationLogic.logic()?.unreadCount.value = count;
       },
     ),

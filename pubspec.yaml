@@ -33,8 +33,7 @@ dependencies:
   dio: 4.0.6
   intl: 0.17.0
   file_picker: 4.6.1
-  path_im_sdk_flutter:
-    git: https://github.com/Path-IM/Path-IM-SDK-Flutter
+  path_im_sdk_flutter: 1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -135,11 +135,11 @@ class _MessageItemState extends State<MessageItem> {
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onLongPress: () {
-              // Clipboard.setData(ClipboardData(text: text));
-              if (_direction == Direction.right) {
-                MessageLogic.logic(_message.receiveID)
-                    ?.sendRevoke(_message.clientMsgID);
-              }
+              Clipboard.setData(ClipboardData(text: text));
+              // if (_direction == Direction.right) {
+              //   MessageLogic.logic(_message.receiveID)
+              //       ?.sendRevoke(_message.clientMsgID);
+              // }
             },
             child: Container(
               padding: const EdgeInsets.all(10),

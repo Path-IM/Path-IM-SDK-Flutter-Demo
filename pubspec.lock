@@ -187,9 +187,11 @@ packages:
   path_im_sdk_flutter:
     dependency: "direct main"
     description:
-      name: path_im_sdk_flutter
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: aca0cf5fd3fa75f36384edb27432b14247296ae1
+      url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
+    source: git
     version: "1.0.0"
   plugin_platform_interface:
     dependency: transitive

@@ -1,6 +1,5 @@
 import 'package:path_im_sdk_flutter_demo/main.dart';
 import 'package:path_im_sdk_flutter_demo/pages/conversation.dart';
-import 'package:path_im_sdk_flutter_demo/pages/message.dart';
 
 enum Direction {
   left,
@@ -39,8 +38,12 @@ class _MessageItemState extends State<MessageItem> {
   @override
   Widget build(BuildContext context) {
     Widget widget = const SizedBox();
-    if (_message.markRevoke == true) {
-      widget = _buildText(_message.revokeContent ?? "消息已经撤回！");
+    if (_message.markRevoke) {
+      String revokeContent = "消息已经撤回！";
+      if (_message.revokeContent.isNotEmpty) {
+        revokeContent = _message.revokeContent;
+      }
+      widget = _buildText(revokeContent);
     } else {
       if (_contentType == ContentType.text) {
         widget = _buildText(_content);
@@ -101,8 +104,10 @@ class _MessageItemState extends State<MessageItem> {
             Get.offAndToNamed(
               Routes.message,
               arguments: {
-                "conversationType": ConversationType.single,
-                "receiveID": _message.sendID,
+                "conversationID": SDKTool.getConversationID(
+                  ConversationType.single,
+                  _message.sendID,
+                ),
               },
             );
           }
@@ -137,7 +142,7 @@ class _MessageItemState extends State<MessageItem> {
             onLongPress: () {
               Clipboard.setData(ClipboardData(text: text));
               // if (_direction == Direction.right) {
-              //   MessageLogic.logic(_message.receiveID)
+              //   MessageLogic.logic(_message.conversationID)
               //       ?.sendRevoke(_message.clientMsgID);
               // }
             },

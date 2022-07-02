@@ -9,10 +9,9 @@ class MessageLogic extends GetxController {
         Get.find,
         tag: tag,
       );
-  final int conversationType;
-  final String receiveID;
+  final String conversationID;
 
-  MessageLogic(this.conversationType, this.receiveID);
+  MessageLogic(this.conversationID);
 
   late ScrollController scrollController;
   bool isLoadMore = false;
@@ -49,42 +48,34 @@ class MessageLogic extends GetxController {
     focusNode.dispose();
     PathIMSDK.instance.conversationManager
         .markConversationRead(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
     )
-        .then((value) {
-      ConversationLogic.logic()?.loadList();
-    });
+        .then(
+      (value) {
+        ConversationLogic.logic()?.loadList();
+      },
+    );
     super.onClose();
   }
 
   void loadList() {
     PathIMSDK.instance.messageManager
         .getMessageList(
-      conversationType: conversationType,
-      receiveID: receiveID,
-      limit: 20,
+      conversationID: conversationID,
       offset: offset * 20,
+      limit: 200,
     )
-        .then((value) {
-      list.addAll(value);
-      update(["list"]);
-      isLoadMore = false;
-    });
+        .then(
+      (value) {
+        list.addAll(value);
+        update(["list"]);
+        isLoadMore = false;
+      },
+    );
   }
 
   void receive(MessageModel message) {
-    bool updateList = false;
-    if (conversationType == ConversationType.single) {
-      if (message.sendID == receiveID) {
-        updateList = true;
-      }
-    } else {
-      if (message.receiveID == receiveID) {
-        updateList = true;
-      }
-    }
-    if (!updateList) return;
+    if (message.conversationID != conversationID) return;
     int index = list.indexWhere((msg) {
       return msg.clientMsgID == message.clientMsgID;
     });
@@ -116,8 +107,7 @@ class MessageLogic extends GetxController {
 
   void sendText(String text) async {
     MessageModel message = await PathIMSDK.instance.messageManager.sendText(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       text: text,
     );
     list.insert(0, message);
@@ -126,8 +116,7 @@ class MessageLogic extends GetxController {
 
   void sendPicture(String pictureUrl) async {
     MessageModel message = await PathIMSDK.instance.messageManager.sendPicture(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       content: PictureContent(pictureUrl: pictureUrl),
     );
     list.insert(0, message);
@@ -136,8 +125,7 @@ class MessageLogic extends GetxController {
 
   void sendVoice(String voiceUrl, int duration) async {
     MessageModel message = await PathIMSDK.instance.messageManager.sendVoice(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       content: VoiceContent(
         voiceUrl: voiceUrl,
         duration: duration,
@@ -149,8 +137,7 @@ class MessageLogic extends GetxController {
 
   void sendVideo(String videoUrl, int duration) async {
     MessageModel message = await PathIMSDK.instance.messageManager.sendVideo(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       content: VideoContent(
         videoUrl: videoUrl,
         duration: duration,
@@ -162,8 +149,7 @@ class MessageLogic extends GetxController {
 
   void sendFile(String fileUrl, String type, int size) async {
     MessageModel message = await PathIMSDK.instance.messageManager.sendFile(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       content: FileContent(
         fileUrl: fileUrl,
         type: type,
@@ -176,8 +162,7 @@ class MessageLogic extends GetxController {
 
   void sendRevoke(String clientMsgID) {
     PathIMSDK.instance.messageManager.markMessageRevoke(
-      conversationType: conversationType,
-      receiveID: receiveID,
+      conversationID: conversationID,
       clientMsgID: clientMsgID,
       revokeContent: "撤回内容-可以随意定义",
     );
@@ -230,18 +215,17 @@ class MessagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map args = Get.arguments;
-    int conversationType = args["conversationType"];
-    String receiveID = args["receiveID"];
+    String conversationID = args["conversationID"];
     MessageLogic logic = Get.put(
-      MessageLogic(conversationType, receiveID),
-      tag: receiveID,
+      MessageLogic(conversationID),
+      tag: conversationID,
     );
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(
           color: Colors.black,
         ),
-        title: Text(logic.receiveID),
+        title: Text(logic.conversationID),
       ),
       body: Column(
         children: [
@@ -260,7 +244,7 @@ class MessagePage extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: logic.hideOperate,
       child: GetBuilder<MessageLogic>(
-        tag: logic.receiveID,
+        tag: logic.conversationID,
         id: "list",
         builder: (logic) {
           return ListView.separated(

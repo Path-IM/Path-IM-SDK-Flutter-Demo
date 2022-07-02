@@ -37,8 +37,7 @@ class HttpService extends GetxService {
 void initPathIM() {
   PathIMSDK.instance.init(
     wsUrl: wsUrl,
-    autoPull: true,
-    autoRetry: true,
+    inspector: true,
     groupIDCallback: GroupIDCallback(
       onGroupIDList: () async {
         return ["default_group"];
@@ -61,20 +60,17 @@ void initPathIM() {
     conversationListener: ConversationListener(
       onAdded: (conversation) {
         ConversationLogic.logic()?.loadList();
+        print("新增会话");
       },
       onUpdate: (conversation) {
         ConversationLogic.logic()?.loadList();
+        print("更新会话");
       },
     ),
     messageListener: MessageListener(
       onReceiveMsg: (message) {
-        ConversationLogic.logic()?.loadList();
-        String receiveID = message.receiveID;
-        if (message.conversationType == ConversationType.single &&
-            message.sendID != ConversationLogic.logic()?.userId) {
-          receiveID = message.sendID;
-        }
-        MessageLogic.logic(receiveID)?.receive(message);
+        MessageLogic.logic(message.conversationID)?.receive(message);
+        print("接收消息:${message.toJson()}");
       },
       onSendSuccess: (clientMsgID) {
         print("发送成功：$clientMsgID");
@@ -93,22 +89,12 @@ void initPathIM() {
     ),
     readReceiptListener: ReadReceiptListener(
       onRead: (message) {
-        String receiveID = message.receiveID;
-        if (message.conversationType == ConversationType.single &&
-            message.sendID != ConversationLogic.logic()?.userId) {
-          receiveID = message.sendID;
-        }
-        MessageLogic.logic(receiveID)?.updateRead(message);
+        MessageLogic.logic(message.conversationID)?.updateRead(message);
       },
     ),
     revokeReceiptListener: RevokeReceiptListener(
       onRevoke: (message) {
-        String receiveID = message.receiveID;
-        if (message.conversationType == ConversationType.single &&
-            message.sendID != ConversationLogic.logic()?.userId) {
-          receiveID = message.sendID;
-        }
-        MessageLogic.logic(receiveID)?.updateRevoke(message);
+        MessageLogic.logic(message.conversationID)?.updateRevoke(message);
       },
     ),
     totalUnreadListener: TotalUnreadListener(

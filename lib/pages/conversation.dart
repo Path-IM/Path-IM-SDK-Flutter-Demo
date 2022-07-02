@@ -24,7 +24,7 @@ class ConversationLogic extends GetxController {
   }
 
   void loadList() {
-    PathIMSDK.instance.conversationManager.getAllConversationList().then(
+    PathIMSDK.instance.conversationManager.getConversationList().then(
       (value) {
         list = value;
         update(["list"]);
@@ -64,8 +64,7 @@ class ConversationPage extends StatelessWidget {
                   Get.toNamed(
                     Routes.message,
                     arguments: {
-                      "conversationType": conversation.conversationType,
-                      "receiveID": conversation.receiveID,
+                      "conversationID": conversation.conversationID,
                     },
                   );
                 },
@@ -163,7 +162,7 @@ class ConversationPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    item.unreadCount?.toString() ?? "0",
+                    item.unreadCount.toString(),
                     style: const TextStyle(
                       color: getTextWhite,
                       fontSize: 10,
@@ -172,14 +171,13 @@ class ConversationPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                if (item.messageTime != null)
-                  Text(
-                    TimeTool.formatMessageTimestamp(item.messageTime!),
-                    style: const TextStyle(
-                      color: getHintBlack,
-                      fontSize: 12,
-                    ),
+                Text(
+                  TimeTool.formatMessageTimestamp(item.messageTime),
+                  style: const TextStyle(
+                    color: getHintBlack,
+                    fontSize: 12,
                   ),
+                ),
               ],
             ),
           ],

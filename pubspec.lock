@@ -204,16 +204,16 @@ packages:
       name: path_im_core_flutter
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   path_im_sdk_flutter:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "16310d80511f6307cd7124787db354609211fed4"
+      resolved-ref: e86e8401c325d22ca5aca25b68e4e51b6dfaf8d2
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
-    version: "1.0.1"
+    version: "1.0.4"
   path_provider:
     dependency: transitive
     description:

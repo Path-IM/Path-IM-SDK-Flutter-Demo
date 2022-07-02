@@ -37,7 +37,7 @@ class HttpService extends GetxService {
 void initPathIM() {
   PathIMSDK.instance.init(
     wsUrl: wsUrl,
-    inspector: true,
+    isarInspector: true,
     groupIDCallback: GroupIDCallback(
       onGroupIDList: () async {
         return ["default_group"];

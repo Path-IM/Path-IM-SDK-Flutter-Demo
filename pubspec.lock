@@ -210,10 +210,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: e86e8401c325d22ca5aca25b68e4e51b6dfaf8d2
+      resolved-ref: cb5cca1b1ffad4f3aa4b20826a5bb441eeb303a2
       url: "https://github.com/Path-IM/Path-IM-SDK-Flutter"
     source: git
-    version: "1.0.4"
+    version: "1.0.5"
   path_provider:
     dependency: transitive
     description:

@@ -1,6 +1,6 @@
 # Path-IM-SDK-Flutter-Demo
 
-支持Flutter5端收发消息。支持文本、图片、语音、视频、文件、自定义消息。
+支持Flutter5端运行。支持文本、图片、语音、视频、文件、自定义消息等。
 
 path_im_sdk_flutter
 [![Pub](https://img.shields.io/pub/v/path_im_sdk_flutter.svg?style=flat-square)](https://pub.dev/packages/path_im_sdk_flutter)
